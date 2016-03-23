@@ -12,7 +12,8 @@
 */
 
 $app->get('/', function () use ($app) {
-    return $app->version();
+    return view('index');
+    //return $app->version();
 });
 
 $app->get('/key', function () {
@@ -22,9 +23,9 @@ $app->get('/key', function () {
 $app->get('/exp', 'ExampleController@index');
 
 $app->group(['namespace' => 'App\Http\Controllers\Map', 'prefix' => 'api/map'], function () use ($app) {
-    $app->post('nearby-search', 'MapController@nearbySearch');
-    $app->post('find-place', 'MapController@findPlace');
-    $app->post('place-detail/{placeid}', 'MapController@detailPlace');
+    $app->get('nearby-search', 'MapController@nearbySearch');
+    $app->get('find-place', 'MapController@findPlace');
+    $app->get('place-detail/{placeid}', 'MapController@detailPlace');
 });
 
 $app->get('/map-api', 'ExampleController@mapApi');

@@ -63,7 +63,7 @@ class MapRepository
                 'name'     => $val->name,
                 'category' => $val->types,
                 'location' => $val->geometry->location,
-                'map-id'   => $val->place_id
+                'map_id'   => $val->place_id
             ]);
         }
 
@@ -94,13 +94,13 @@ class MapRepository
             $placeid = $val->place_id;
 
             // get detail place
-            $detailPlace = $this->detailPlace($placeid);
+            $detailPlace = $this->detailPlace($placeid, []);
 
             array_push($result, [
                 'name'     => $val->description,
                 'category' => $val->types,
                 'location' => $detailPlace['location'],
-                'map-id'   => $placeid
+                'map_id'   => $placeid
             ]);
         }
 
@@ -110,11 +110,12 @@ class MapRepository
     /**
      * Get detail place
      *
-     * @param $placeid
+     * @param         $placeid
+     * @param array   $data
      *
      * @return array
      */
-    public function detailPlace($placeid)
+    public function detailPlace($placeid, array  $data)
     {
         if (empty($placeid)) {
             return [
@@ -127,6 +128,10 @@ class MapRepository
         $client = new Client();
 
         $request = $client->request('GET', $url);
+        $is_original = empty($data['is_original']) ? false : $data['is_original'];
+        if ($is_original) {
+            return $request->getBody();
+        }
 
         $data = json_decode($request->getBody());
         $data = $data->result;
@@ -135,7 +140,7 @@ class MapRepository
             'name'     => $data->name,
             'category' => $data->types,
             'location' => $data->geometry->location,
-            'map-id'   => $data->place_id
+            'map_id'   => $data->place_id
         ];
 
         return $result;

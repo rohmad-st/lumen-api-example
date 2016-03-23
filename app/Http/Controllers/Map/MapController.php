@@ -45,13 +45,14 @@ class MapController extends Controller
     }
 
     /**
-     * @param $placeid
+     * @param Request $request
+     * @param         $placeid
      *
      * @return array
      */
-    function detailPlace($placeid)
+    function detailPlace(Request $request, $placeid)
     {
-        return $this->map->detailPlace($placeid);
+        return $this->map->detailPlace($placeid, $request->all());
     }
 
 }

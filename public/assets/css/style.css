@@ -1,0 +1,19 @@
+body {
+    padding-top: 50px;
+}
+.starter-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+.frmSearch {border: 1px solid #F0F0F0;background-color:#C8EEFD;margin: 2px 0px;padding:40px;}
+#country-list{float:left;list-style:none;margin:0;padding:0;width:190px;}
+#country-list li{padding: 10px; background:#FAFAFA;border-bottom:#F0F0F0 1px solid;}
+#country-list li:hover{background:#F0F0F0;}
+#search-box{padding: 10px;border: #F0F0F0 1px solid;}
+
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: green; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
