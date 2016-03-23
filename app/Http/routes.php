@@ -20,20 +20,17 @@ $app->get('/key', function () {
 });
 
 $app->get('/exp', 'ExampleController@index');
+
+$app->group(['namespace' => 'App\Http\Controllers\Map', 'prefix' => 'api/map'], function () use ($app) {
+    $app->post('nearby-search', 'MapController@nearbySearch');
+    $app->post('place-detail/{placeid}', 'MapController@detailPlace');
+});
+
 $app->get('/map-api', 'ExampleController@mapApi');
 
 $app->get('test', function () {
     dd(DB::connection()->getPdo());
 });
-
-//$app->get('/test', function () {
-//    return [
-//        'success' => true,
-//        'result'  => [
-//            'message' => 'Test berhasil.'
-//        ]
-//    ];
-//});
 
 $app->get('/elasticsearch', function () {
     $client = \Elasticsearch\ClientBuilder::create()->build();
@@ -49,15 +46,3 @@ $app->get('/elasticsearch', function () {
 
     return $response;
 });
-
-//$app->get('/map-api', function () {
-//    /GuzzleHttp\RequestOptions::JSON;
-//    $url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670,151.1957&radius=500&types=food&name=cruise&key=';
-//    $key = 'AIzaSyAp_OxlQ8w6fayEK51b-6mpupMi-wbdOwc';
-//    $client = new \GuzzleHttp\Client();
-//
-//    $request = $client->request('GET', $url . $key);
-//    $response = $request->getBody();
-//
-//    return $response;
-//});
