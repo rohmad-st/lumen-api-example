@@ -71,6 +71,43 @@ class MapRepository
     }
 
     /**
+     * Find place using auto complete
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function findPlace(array $data)
+    {
+        // initial var
+        $term = empty($data['term']) ? '' : $data['term'];
+
+        $url = $this->url . '/autocomplete/json?input=' . $term . '&types=geocode&key=' . $this->key;
+        $client = new Client();
+
+        $request = $client->request('GET', $url);
+        $response = json_decode($request->getBody());
+
+        $result = [];
+
+        foreach ($response->predictions as $key => $val) {
+            $placeid = $val->place_id;
+
+            // get detail place
+            $detailPlace = $this->detailPlace($placeid);
+
+            array_push($result, [
+                'name'     => $val->description,
+                'category' => $val->types,
+                'location' => $detailPlace['location'],
+                'map-id'   => $placeid
+            ]);
+        }
+
+        return $result;
+    }
+
+    /**
      * Get detail place
      *
      * @param $placeid

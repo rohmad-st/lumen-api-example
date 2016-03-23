@@ -35,6 +35,16 @@ class MapController extends Controller
     }
 
     /**
+     * @param Request $request
+     *
+     * @return array
+     */
+    function findPlace(Request $request)
+    {
+        return $this->map->findPlace($request->all());
+    }
+
+    /**
      * @param $placeid
      *
      * @return array
