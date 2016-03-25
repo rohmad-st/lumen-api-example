@@ -94,7 +94,7 @@
                 // show describe if source from google
                 if (source == 1) {
                     document.getElementById('notifSource').innerHTML = '';
-                    $('#notifSource').append('<h4>Source berasal dari Google Map Api</h4>');
+                    //$('#notifSource').append('<h4>Source berasal dari Google Map Api</h4>');
 
                     // get detail
                     getDetailOriginal(map_id);
