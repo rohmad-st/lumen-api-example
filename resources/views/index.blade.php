@@ -101,7 +101,11 @@
                     getDetailCustom(map_id);
 
                 } else {
+                    // clear notification
                     document.getElementById('notifSource').innerHTML = '';
+                    document.getElementById('appendOriginal').innerHTML = '';
+                    document.getElementById('appendCustom').innerHTML = '';
+
                     $('#notifSource').append('<h4>Source berasal dari Api Local</h4>');
                 }
             }
