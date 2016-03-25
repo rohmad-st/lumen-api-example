@@ -59,6 +59,9 @@
                 <div id="appendCustom" style="text-align: left !important;"></div>
             </div>
         </div>
+        <div class="row">
+            <div id="notifSource"></div>
+        </div>
     </div>
 
 </div><!-- /.container -->
@@ -75,20 +78,32 @@
                         return {
                             label: val.name,
                             value: val.name,
-                            map_id: val.map_id
+                            map_id: val.map_id,
+                            source: val.source
                         };
                     }));
                 });
             },
             minLength: 3,
             select: function (event, ui) {
-                var label = ui.item.label;
-                var value = ui.item.value;
-                var map_id = ui.item.map_id;
+                var label = ui.item.label,
+                        value = ui.item.value,
+                        map_id = ui.item.map_id,
+                        source = ui.item.source;
 
-                // get detail
-                getDetailOriginal(map_id);
-                getDetailCustom(map_id);
+                // show describe if source from google
+                if (source == 1) {
+                    document.getElementById('notifSource').innerHTML = '';
+                    $('#notifSource').append('<h4>Source berasal dari Google Map Api</h4>');
+
+                    // get detail
+                    getDetailOriginal(map_id);
+                    getDetailCustom(map_id);
+
+                } else {
+                    document.getElementById('notifSource').innerHTML = '';
+                    $('#notifSource').append('<h4>Source berasal dari Api Local</h4>');
+                }
             }
             //delay: 100
         });

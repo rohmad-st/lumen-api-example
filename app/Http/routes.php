@@ -31,7 +31,12 @@ $app->group(['namespace' => 'App\Http\Controllers\Map', 'prefix' => 'api/map'], 
 $app->get('/map-api', 'ExampleController@mapApi');
 
 $app->get('test', function () {
-    dd(DB::connection()->getPdo());
+    $xFile = file_get_contents(storage_path() . '/json/my_map.json');
+
+    $response = json_decode($xFile);
+
+    return $response;
+    //dd(DB::connection()->getPdo());
 });
 
 $app->get('/elasticsearch', function () {

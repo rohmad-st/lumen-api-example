@@ -34,6 +34,41 @@ class MapRepository
         return $this->key;
     }
 
+    public function getJson()
+    {
+        $fileJson = file_get_contents(storage_path() . '/json/my_map.json');
+
+        $response = json_decode($fileJson);
+
+        return $response;
+    }
+
+    /**
+     * Find place using auto complete
+     *
+     * @param array $data
+     *
+     * @return array
+     */
+    public function findPlace(array $data)
+    {
+        // initial var
+        $term = empty($data['term']) ? '' : $data['term'];
+
+        // get map api local
+        $resultLocal = $this->findPlaceLocal($term);
+
+        if ($resultLocal) {
+            return $resultLocal;
+
+        } else {
+            // get map api google
+            $resultGoogle = $this->findPlaceGoogle($term);
+
+            return $resultGoogle;
+        }
+    }
+
     /**
      * Find nearby place
      *
@@ -70,18 +105,47 @@ class MapRepository
         return $result;
     }
 
+    public function findPlaceLocal($term)
+    {
+        $response = $this->getJson();
+
+        // initial term input value
+        $data = [];
+
+        foreach ($response as $val) {
+            array_push($data, $val->name);
+        }
+
+        // search name
+        $input = preg_quote($term, '~');
+        $result = preg_grep('~' . $input . '~', $data);
+
+        $lastResult = [];
+        foreach ($result as $val) {
+            array_push($lastResult, [
+                'name'     => $val,
+                'category' => 0,
+                'location' => [
+                    'lat'  => 0,
+                    'long' => 0
+                ],
+                'map_id'   => 0,
+                'source'   => 0 //0=local; 1=google
+            ]);
+        }
+
+        return $lastResult;
+    }
+
     /**
      * Find place using auto complete
      *
-     * @param array $data
+     * @param $term
      *
      * @return array
      */
-    public function findPlace(array $data)
+    public function findPlaceGoogle($term)
     {
-        // initial var
-        $term = empty($data['term']) ? '' : $data['term'];
-
         $url = $this->url . '/autocomplete/json?input=' . $term . '&types=geocode&key=' . $this->key;
         $client = new Client();
 
@@ -100,7 +164,8 @@ class MapRepository
                 'name'     => $val->description,
                 'category' => $val->types,
                 'location' => $detailPlace['location'],
-                'map_id'   => $placeid
+                'map_id'   => $placeid,
+                'source'   => 1
             ]);
         }
 
